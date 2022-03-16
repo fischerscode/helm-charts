@@ -1,0 +1,119 @@
+{{- if .Values.unbound.enabled }}
+
+{{- $clusterDomain := default "cluster.local" .Values.clusterDomain}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mailu.fullname" . }}-unbound
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "mailu.fullname" . }}
+      component: unbound
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ include "mailu.fullname" . }}
+        component: unbound
+      {{- with .Values.unbound.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: unbound
+        image: {{ .Values.unbound.image.repository }}:{{ .Values.unbound.image.tag }}
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: config
+            mountPath: /opt/unbound/etc/unbound/forward-records.conf
+            subPath: forward-records.conf
+            readOnly: true
+          {{- if .Values.timezone }}
+          - name: zoneinfo
+            mountPath: /usr/share/zoneinfo
+            readOnly: true
+          - name: zoneinfo
+            subPath: {{ .Values.timezone }}
+            mountPath: /etc/localtime
+            readOnly: true
+          {{- end }}
+        ports:
+          - name: dns-tcp
+            containerPort: 53
+            protocol: TCP
+          - name: dns-udp
+            containerPort: 53
+            protocol: UDP
+        {{- with .Values.unbound.resources }}
+        resources:
+        {{- .|toYaml|nindent 10}}
+        {{- end }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "mailu.fullname" . }}-unbound-config
+        {{- if .Values.timezone }}
+        - name: zoneinfo
+          hostPath:
+            path: /usr/share/zoneinfo
+            type: Directory
+        {{- end }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mailu.fullname" . }}-unbound
+  labels:
+    app: {{ include "mailu.fullname" . }}
+    component: unbound
+spec:
+  selector:
+    app: {{ include "mailu.fullname" . }}
+    component: unbound
+  clusterIP: {{ .Values.unbound.unboundServiceIP }}
+  ports:
+  - name: dns-tcp
+    port: 53
+    protocol: TCP
+  - name: dns-udp
+    port: 53
+    protocol: UDP
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mailu.fullname" . }}-unbound-config
+data:
+  forward-records.conf: |
+    private-domain: "{{ $clusterDomain }}"
+    domain-insecure: "{{ $clusterDomain }}"
+
+    forward-zone:
+      name: "{{ $clusterDomain }}."
+      forward-addr: {{ .Values.unbound.clusterDNS }}@53
+
+{{- end }}

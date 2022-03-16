@@ -4,6 +4,7 @@
 
 {{- /* Define persistantVolume claimName */}}
 {{- $claimName := .Values.persistence.single_pvc | ternary (include "mailu.claimName" .) .Values.fetchmail.persistence.claimNameOverride | default (printf "%s-fetchmail" (include "mailu.fullname" .)) }}
+{{- $clusterDomain := default "cluster.local" .Values.clusterDomain}}
 
 {{ if .Capabilities.APIVersions.Has "apps/v1/Deployment" }}
 apiVersion: apps/v1
@@ -76,6 +77,19 @@ spec:
         resources:
         {{- .|toYaml|nindent 10}}
         {{- end }}
+      {{- if .Values.unbound.enabled }}
+      dnsConfig:
+        nameservers:
+          - {{ .Values.unbound.unboundServiceIP }}
+        searches:
+          - {{ .Release.Namespace }}.svc.{{ $clusterDomain }}
+          - svc.{{ $clusterDomain }}
+          - {{ $clusterDomain }}
+        options:
+          - name: ndots
+            value: "5"
+      dnsPolicy: None
+      {{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:

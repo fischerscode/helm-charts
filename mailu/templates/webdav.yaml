@@ -4,6 +4,7 @@
 
 {{- /* Define persistantVolume claimName */}}
 {{- $claimName := .Values.persistence.single_pvc | ternary (include "mailu.claimName" .) .Values.webdav.persistence.claimNameOverride | default (printf "%s-webdav" (include "mailu.fullname" .)) }}
+{{- $clusterDomain := default "cluster.local" .Values.clusterDomain}}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -84,6 +85,19 @@ spec:
           failureThreshold: {{ default 1 .Values.webdav.readinessProbe.failureThreshold }} 
           timeoutSeconds: {{ default 5 .Values.webdav.readinessProbe.timeoutSeconds }} 
         {{- end }}
+      {{- if .Values.unbound.enabled }}
+      dnsConfig:
+        nameservers:
+          - {{ .Values.unbound.unboundServiceIP }}
+        searches:
+          - {{ .Release.Namespace }}.svc.{{ $clusterDomain }}
+          - svc.{{ $clusterDomain }}
+          - {{ $clusterDomain }}
+        options:
+          - name: ndots
+            value: "5"
+      dnsPolicy: None
+      {{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:
