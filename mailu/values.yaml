@@ -523,3 +523,15 @@ fetchmail:
       memory: 200Mi
       cpu: 200m
   delay: 600
+
+unbound:
+  enabled: false
+  image:
+    repository: mvance/unbound
+    tag: 1.15.0
+  # The IP of the cluster DNS Server
+  clusterDNS: 10.96.0.10
+  # The ClusterIP, the unbound service takes.
+  # Choose an unclaimed one, that lays in your service CIDR
+  # (kubectl cluster-info dump | grep -m 1 service-cluster-ip-range).
+  # unboundServiceIP:
