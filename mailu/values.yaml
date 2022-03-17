@@ -114,6 +114,10 @@ mail:
   authRatelimitExemtionLength: 86400
   # authRatelimitExemtion:
 
+  # Configuration to reduce outgoing spam in case of an compromised account. See the documentation for further information: https://mailu.io/1.9/configuration.html?highlight=MESSAGE_RATELIMIT
+  messageRatelimit: 200/day
+  # messageRatelimitExemption:
+
 # certmanager settings
 certmanager:
   enabled: true
