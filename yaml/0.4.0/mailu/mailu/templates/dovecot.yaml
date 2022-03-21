@@ -82,6 +82,7 @@ spec:
             value: mailu-redis
           - name: WEBMAIL
             value: none
+          
           - name: SECRET_KEY
             value: "chang3m3!"
         ports:

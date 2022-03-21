@@ -83,6 +83,7 @@ spec:
             value: 10.42.0.0/16
           - name: PASSWORD_SCHEME
             value: "PBKDF2"
+          
           - name: SECRET_KEY
             value: "chang3m3!"
           - name: AUTH_RATELIMIT_IP
