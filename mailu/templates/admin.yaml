@@ -109,8 +109,8 @@ spec:
                 name: {{ .Values.secretKeyRef.name }}
                 key: {{ .Values.secretKeyRef.key}}
           {{ else }}
-           - name: SECRET_KEY
-             value: "{{ required "secretKey" .Values.secretKey }}"
+          - name: SECRET_KEY
+            value: "{{ required "secretKey" .Values.secretKey }}"
           {{- end}}
           - name: AUTH_RATELIMIT_IP
             value: "{{ required "mail.authRatelimitIP" .Values.mail.authRatelimitIP }}"
