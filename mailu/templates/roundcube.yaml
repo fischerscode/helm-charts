@@ -58,7 +58,7 @@ spec:
             value: {{ include "mailu.fullname" . }}-dovecot
           - name: FRONT_ADDRESS
             value: {{ include "mailu.fullname" . }}-front
-          {{ if hasKey .Values "secretKeyRef" }}
+          {{- if hasKey .Values "secretKeyRef" }}
           - name: SECRET_KEY
             valueFrom:
               secretKeyRef:
