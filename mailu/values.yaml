@@ -10,6 +10,9 @@
 
 # The secret key is required for protecting authentication cookies and must be set individually for each deployment
 # secretKey: chang3m3!
+# secretKeyRef:
+#   name:
+#   key:
 
 # An initial account can automatically be created:
 #initialAccount:
