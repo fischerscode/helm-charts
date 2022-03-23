@@ -2,5 +2,7 @@
 
 [Chart documentation](mailu/README.md)
 
+**This repo contains my customizations of the official [chart](https://github.com/Mailu/helm-charts).**
+Some might get merged.
 
-Releases can be found at https://mailu.github.io/helm-charts/
+Releases can be found at https://fischerscode.github.io/mailu-helm-charts/

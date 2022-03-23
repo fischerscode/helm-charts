@@ -37,7 +37,7 @@ git clone --single-branch --branch gh-pages https://github.com/Mailu/helm-charts
 echo "Packing helm chart"
 ${HELM} package mailu -d gh-pages
 echo "Updating repo index"
-${HELM} repo index --url https://mailu.github.io/helm-charts/ gh-pages
+${HELM} repo index --url https://fischerscode.github.io/mailu-helm-charts/ gh-pages
 echo "Updating gh-pages html"
 ( cd gh-pages && ./index.html.sh > index.html )
 
