@@ -101,10 +101,7 @@ spec:
             type: Directory
         {{- end }}
   strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
+    type: Recreate
 
 
 {{- if not .Values.persistence.single_pvc }}

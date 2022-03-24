@@ -135,6 +135,8 @@ spec:
             path: /usr/share/zoneinfo
             type: Directory
         {{- end }}
+  strategy:
+    type: Recreate
 
 ---
 
