@@ -131,6 +131,7 @@ certmanager:
 # Set ingress and loadbalancer config
 ingress:
   externalIngress: true
+  deployIngress: true
   tlsFlavor: cert
   className: ""
   annotations:
