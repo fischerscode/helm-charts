@@ -292,7 +292,6 @@ spec:
       containers:
       - name: admin
         image: mailu/admin:1.8
-        imagePullPolicy: Always
         volumeMounts:
           - name: data
             subPath: admin
@@ -404,7 +403,6 @@ spec:
       containers:
       - name: clamav
         image: mailu/clamav:1.8
-        imagePullPolicy: Always
         volumeMounts:
           - name: data
             subPath: clamav
@@ -476,7 +474,6 @@ spec:
       containers:
       - name: admin
         image: mailu/dovecot:1.8
-        imagePullPolicy: Always
         volumeMounts:
           - name: data
             subPath: dovecotdata
@@ -596,7 +593,6 @@ spec:
       containers:
       - name: front
         image: mailu/nginx:1.8
-        imagePullPolicy: Always
         volumeMounts:
           - name: certs
             mountPath: /certs
@@ -735,7 +731,6 @@ spec:
       containers:
       - name: postfix
         image: mailu/postfix:1.8
-        imagePullPolicy: Always
         volumeMounts:
           - mountPath: /queue
             name: data
@@ -840,7 +835,6 @@ spec:
       containers:
       - name: redis
         image: redis:5-alpine
-        imagePullPolicy: Always
         volumeMounts:
           - name: data
             subPath: redis
@@ -915,7 +909,6 @@ spec:
       containers:
       - name: roundcube
         image: mailu/roundcube:1.8
-        imagePullPolicy: Always
         volumeMounts:
           - mountPath: /data
             name: data
@@ -998,7 +991,6 @@ spec:
       containers:
       - name: rspamd
         image: mailu/rspamd:1.8
-        imagePullPolicy: Always
         volumeMounts:
           - name: data
             subPath: rspamd

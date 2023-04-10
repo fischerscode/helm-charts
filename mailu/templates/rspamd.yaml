@@ -35,7 +35,6 @@ spec:
       containers:
       - name: rspamd
         image: {{ .Values.rspamd.image.repository }}:{{ default .Values.mailuVersion .Values.rspamd.image.tag }}
-        imagePullPolicy: Always
         volumeMounts:
           - name: data
             subPath: rspamd

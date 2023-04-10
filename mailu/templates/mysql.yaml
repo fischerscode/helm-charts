@@ -48,7 +48,6 @@ spec:
       containers:
       - name: mysql
         image: {{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag }}
-        imagePullPolicy: Always
         args:
           - --character-set-server=utf8
           - --skip-character-set-client-handshake

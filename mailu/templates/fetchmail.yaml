@@ -41,7 +41,6 @@ spec:
       containers:
       - name: admin
         image: {{ .Values.fetchmail.image.repository }}:{{ default .Values.mailuVersion .Values.fetchmail.image.tag }}
-        imagePullPolicy: Always
         volumeMounts:
           - name: data
             subPath: dovecotdata

@@ -43,7 +43,6 @@ spec:
       containers:
       - name: front
         image: {{ .Values.front.image.repository }}:{{ default .Values.mailuVersion .Values.front.image.tag }}
-        imagePullPolicy: Always
         volumeMounts:
           - name: certs
             mountPath: /certs

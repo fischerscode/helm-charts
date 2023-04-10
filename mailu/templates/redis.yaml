@@ -34,7 +34,6 @@ spec:
       containers:
       - name: redis
         image: {{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}
-        imagePullPolicy: Always
         volumeMounts:
           - name: data
             subPath: redis
